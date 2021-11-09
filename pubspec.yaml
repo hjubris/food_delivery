@@ -55,10 +55,9 @@ flutter:
   assets:
     - assets/home.jpg
     - assets/cook.jpg
-    - assets/Burgers/
-    - assets/Pizzas/
-    - assets/Salads/
+    - assets/products/
     - assets/Logo/
+    - assets/Icons/
 
 #  fonts:
 #    - family: Nunito

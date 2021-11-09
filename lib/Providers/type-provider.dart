@@ -2,8 +2,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:food_delivery/Models/types-model.dart';
 
-const serverUrl = 'https://56055fed-95d8-4db3-8637-54244cbef88d.mock.pstmn.io'; //postman del cibo
-//const serverUrl = 'https://7b18038e-02f0-4f5d-a55f-8fed1867119d.mock.pstmn.io'; //postman delle borse
+const serverUrl = 'https://56055fed-95d8-4db3-8637-54244cbef88d.mock.pstmn.io'; ///postman del cibo
+//const serverUrl = 'https://7b18038e-02f0-4f5d-a55f-8fed1867119d.mock.pstmn.io'; ///postman delle borse
 
 class TypeProvider {
   static Future<List<FoodType>> fetchTypes() async {

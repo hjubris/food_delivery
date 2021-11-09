@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
          // fontFamily: 'Nunito',
           primarySwatch: Colors.red,
           textTheme: TextTheme(
-              bodyText1: TextStyle(color: Colors.white),
-              bodyText2: TextStyle(color: Colors.white)),
+              bodyText1: TextStyle(color: Colors.black),
+              bodyText2: TextStyle(color: Colors.black)),
         ),
         home: MyHomePage(title: 'Food server'),
         debugShowCheckedModeBanner: false);

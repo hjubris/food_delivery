@@ -27,7 +27,7 @@ class Product {
         name: json['name'],
         price: json['price'],
         description: json['description'],
-        img: "assets/images/${json['image']}",
+        img: "products/${json['image']}.jpg",
         color: Color(int.parse(json['color'], radix: 16)),
         ingredients: List.of(json['ingredients']).cast<String>(),
         typeId: json['typeId']);

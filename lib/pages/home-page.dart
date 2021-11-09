@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/Models/products-model.dart';
 import 'package:food_delivery/Providers/type-provider.dart';
 import 'package:food_delivery/components/bottom-bar.dart';
+import 'package:food_delivery/pages/detail-page.dart';
 //import 'package:food_delivery/pages/detail-page.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,10 +27,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     this.fetchProducts();
     this.fetchTypes();
-  }
-
-  Widget createProducts() {
-    return Text("yo");
   }
 
   @override
@@ -53,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Text(
                     "The fastest delivery service! For real don't look it up",
-                    //style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.white),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -73,6 +70,8 @@ class _HomePageState extends State<HomePage> {
               child:
                   Text("Categories", style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
             ),
+
+            ///gets food types from server and builds a list of buttons
             types == null
                 ? Center(child: CircularProgressIndicator())
                 : Container(
@@ -82,57 +81,24 @@ class _HomePageState extends State<HomePage> {
                       scrollDirection: Axis.horizontal,
                       itemCount: types?.length,
                       itemBuilder: (context, index) {
-                        return buildType(index);
+                        return buildTypes(index);
                       },
                     ),
                   ),
 
-            ///a Row with temporary buttons to redirect to different categories. TBD
-            // Row(children: [
-            //   Padding(
-            //     padding: const EdgeInsets.all(8.0),
-            //     child: Align(
-            //         child: ElevatedButton(
-            //             onPressed: () {
-            //               Navigator.push(
-            //                   context,
-            //                   MaterialPageRoute(
-            //                       builder: (context) => DetailPage(
-            //                             typeId: 1,
-            //                           )));
-            //             },
-            //             child: Text("Burgers"))),
-            //   ),
-            //   Padding(
-            //     padding: const EdgeInsets.all(8.0),
-            //     child: Align(
-            //         child: ElevatedButton(
-            //             onPressed: () {
-            //               Navigator.push(
-            //                   context,
-            //                   MaterialPageRoute(
-            //                       builder: (context) => DetailPage(
-            //                             typeId: 2,
-            //                           )));
-            //             },
-            //             child: Text("Pizzas"))),
-            //   ),
-            //   Padding(
-            //     padding: const EdgeInsets.all(8.0),
-            //     child: Align(
-            //         child: ElevatedButton(
-            //             onPressed: () {
-            //               Navigator.push(
-            //                   context,
-            //                   MaterialPageRoute(
-            //                       builder: (context) => DetailPage(
-            //                             typeId: 3,
-            //                           )));
-            //             },
-            //             child: Text("Salad"))),
-            //   )
-            // ]),
-            createProducts()
+            ///gets products from server and builds a list of cards
+            products == null
+                ? Center(child: CircularProgressIndicator())
+                : Container(
+                    height: 350,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        physics: BouncingScrollPhysics(),
+                        itemCount: products?.length,
+                        itemBuilder: (context, index) {
+                          return buildProducts(index);
+                        }),
+                  )
           ])),
       bottomNavigationBar: BottomBar(),
     );
@@ -142,7 +108,9 @@ class _HomePageState extends State<HomePage> {
     List<Product> products = await ProductProvider.fetchProducts();
     this.setState(() {
       this.products = products;
-      // this.visibleProducts = products;    Questa var ci serve per quando filtriamo in base al typeId
+
+      ///We use this variable when filtering by typeId
+      // this.visibleProducts = products;
     });
   }
 
@@ -153,14 +121,21 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Widget buildType(int index) {
+  ///this build the three categories' buttons, "onPressed" will apply filter
+  ///and show only the selected category
+  Widget buildTypes(int index) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: ElevatedButton(
           style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DetailPage(typeId: types![index].id!)),
+            );
+          },
           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(types![index].name!),
             Padding(
@@ -169,5 +144,25 @@ class _HomePageState extends State<HomePage> {
             ),
           ])),
     );
+  }
+
+  Widget buildProducts(int index) {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+          elevation: 3,
+          shadowColor: Colors.grey[800],
+          child: Column(
+            children: [
+              Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(products![index].img!, fit: BoxFit.contain),
+                  )),
+              Center(child: Text(products![index].name!))
+            ],
+          ),
+        ));
   }
 }
