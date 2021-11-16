@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:food_delivery/Models/types-model.dart';
 import 'package:food_delivery/Providers/product-provider.dart';
 //import 'package:http/http.dart' as http;
@@ -41,63 +42,81 @@ class _HomePageState extends State<HomePage> {
       body: Padding(
           padding: EdgeInsets.all(15),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Container(
-              height: 200,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.deepPurple),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    "The fastest delivery service! For real don't look it up",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(onPressed: () {}, child: Text("Get Started")),
-                      Image.asset(
-                        "Logo/logo.png",
-                        scale: 35,
-                      )
-                    ],
-                  )
-                ],
+            Flexible(
+              flex: 30,
+              child: Container(
+                height: 200,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.deepPurple),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: Text(
+                        "The fastest delivery service! For real don't look it up",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Flexible(
+                      flex: 3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(onPressed: () {}, child: Text("Get Started")),
+                          Image.asset(
+                            "Logo/logo.png",
+                            scale: 35,
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child:
-                  Text("Categories", style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
+            Flexible(
+              flex: 10,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Categories",
+                    style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
+              ),
             ),
 
             ///gets food types from server and builds a list of buttons
             types == null
                 ? Center(child: CircularProgressIndicator())
-                : Container(
-                    height: 40,
-                    child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: types?.length,
-                      itemBuilder: (context, index) {
-                        return buildTypes(index);
-                      },
+                : Flexible(
+                    flex: 10,
+                    child: Container(
+                      // height: 40,
+                      child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: types?.length,
+                        itemBuilder: (context, index) {
+                          return buildTypes(index);
+                        },
+                      ),
                     ),
                   ),
 
             ///gets products from server and builds a list of cards
             products == null
                 ? Center(child: CircularProgressIndicator())
-                : Container(
-                    height: 350,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        physics: BouncingScrollPhysics(),
-                        itemCount: products?.length,
-                        itemBuilder: (context, index) {
-                          return buildProducts(index);
-                        }),
+                : Flexible(
+                    flex: 50,
+                    child: Container(
+                      //height: 350,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          physics: BouncingScrollPhysics(),
+                          itemCount: products?.length,
+                          itemBuilder: (context, index) {
+                            return buildProducts(index);
+                          }),
+                    ),
                   )
           ])),
       bottomNavigationBar: BottomBar(),
@@ -150,7 +169,8 @@ class _HomePageState extends State<HomePage> {
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
-          elevation: 3,
+          clipBehavior: Clip.hardEdge,
+          elevation: 5,
           shadowColor: Colors.grey[800],
           child: Column(
             children: [
@@ -160,7 +180,11 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Image.asset(products![index].img!, fit: BoxFit.contain),
                   )),
-              Center(child: Text(products![index].name!))
+              Center(
+                  child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(products![index].name!, style: TextStyle(fontWeight: FontWeight.w500)),
+              ))
             ],
           ),
         ));
